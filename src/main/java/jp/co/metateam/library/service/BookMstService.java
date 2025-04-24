@@ -11,11 +11,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.micrometer.common.util.StringUtils;
+import jp.co.metateam.library.model.Account;
+import jp.co.metateam.library.model.AccountDto;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.repository.BookMstRepository;
+import lombok.extern.log4j.Log4j2;
 
 @Service
+@Log4j2
 public class BookMstService {
 
     private final BookMstRepository bookMstRepository;
@@ -25,6 +29,13 @@ public class BookMstService {
         this.bookMstRepository = bookMstRepository;
     }
     
+public BookMst selectByTitle(String title){
+    return this.bookMstRepository.findByTitle(title).orElse(null);
+}
+public BookMst selectByIsbn(String isbn){
+    return this.bookMstRepository.findByIsbn(isbn).orElse(null);
+}
+
     public List<BookMstDto> findAvailableWithStockCount() {
         List<BookMst> books = this.bookMstRepository.findLimitedBook();
         List<BookMstDto> bookMstDtoList = new ArrayList<BookMstDto>();
@@ -42,7 +53,23 @@ public class BookMstService {
 
         return bookMstDtoList;
     }
-    
+        @Transactional
+    public void save(BookMstDto bookMstDto) {
+        try {
+            // BookMstDtoからBookMstへの変換
+            BookMst BookMst = new BookMst();
+
+            BookMst.setTitle(bookMstDto.getTitle());
+            BookMst.setIsbn(bookMstDto.getIsbn());
+
+
+            // データベースへの保存
+            this.bookMstRepository.save(BookMst);
+        } catch (Exception e) {
+            log.error("Failed to save book: " + bookMstDto, e);
+            throw new RuntimeException("Failed to save book", e);
+        }
+    }
 }
 
 
