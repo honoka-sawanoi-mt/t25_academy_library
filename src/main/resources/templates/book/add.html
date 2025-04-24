@@ -29,7 +29,7 @@
                          <label for="name">書籍名</label>
                          <label style="color:red" for="name">*</label>
                          <br> 
-                         <input type="text" name="title" th:field="*{title}" placeholder="書籍名を入力"  size="100" maxlength="255">     
+                         <input type="text" name="title" th:field="*{title}" placeholder="書籍名を入力"  size="100" maxlength="50">     
                          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></span>
                         </div>
                         <br>

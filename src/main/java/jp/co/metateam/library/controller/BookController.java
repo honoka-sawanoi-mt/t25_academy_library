@@ -23,6 +23,7 @@ import lombok.extern.log4j.Log4j2;
 /**
  * 書籍関連クラス
  */
+import java.util.Objects;
 @Log4j2
 @Controller
 public class BookController{
@@ -55,33 +56,32 @@ public class BookController{
 
     @PostMapping("/book/add")
     public String register(@ModelAttribute("bookMstDto") BookMstDto bookMstDto, BindingResult result, Model model){      
-        boolean errTitleFlg = false;
-        boolean errIsbnFlg = false;        
+   
         String titleExist = bookMstDto.getTitle();
         String isbnExist = bookMstDto.getIsbn();
 
-        if(bookMstDto.getTitle() == null || bookMstDto.getTitle().trim().isEmpty()){
+        if(Objects.isNull(titleExist) || titleExist.trim().isEmpty()){
             result.rejectValue("title", "error.value", "書籍名は必須です");
-            errTitleFlg = true;
-        }
-        if(bookMstDto.getIsbn() == null || bookMstDto.getIsbn().trim().isEmpty()){
-            result.rejectValue("isbn", "error.value", "ISBNは必須です");
-            errIsbnFlg = true;
-        }
-        if (bookMstDto.getTitle() != null && bookMstDto.getTitle().length() > 50) {
+
+        } else if (titleExist.length() > 50) {
             result.rejectValue("title", "error.value", "書籍名は50文字以下で入力してください");
-            errTitleFlg = true;
+
         }
-        if (bookMstDto.getIsbn() != null) {
-            if (bookMstDto.getIsbn().length() != 13) {
+        if(isbnExist == null || isbnExist.trim().isEmpty()){
+            result.rejectValue("isbn", "error.value", "ISBNは必須です");
+
+        }else{
+            if (isbnExist.length() != 13) {
                 result.rejectValue("isbn", "error.value", "ISBNは13桁で入力してください");
-                errIsbnFlg = true;
-            } else if (!bookMstDto.getIsbn().matches("^[0-9]+$")) {
+
+            } 
+            if (!isbnExist.matches("^[0-9]+$")) {
                 result.rejectValue("isbn", "error.value", "ISBNは半角数字のみで入力してください");
-                errIsbnFlg = true;
-            } else if (bookMstService.selectByIsbn(bookMstDto.getIsbn()) != null) {
+
+            }
+            if (bookMstService.selectByIsbn(bookMstDto.getIsbn()) != null) {
                 result.rejectValue("isbn", "error.value", "登録済みのISBNです");
-                errIsbnFlg = true;
+
             }
         }
         if (result.hasErrors()) {
@@ -89,11 +89,10 @@ public class BookController{
             return "book/add";
         }
         try{ 
-        bookMstService.save(bookMstDto);
-        return"redirect:/book/index";
+            bookMstService.save(bookMstDto);
+            return"redirect:/book/index";
              }catch (Exception e) {
                 log.error(e.getMessage());
-    
                 result.reject("global.error", "登録処理でエラーが発生しました");
                 model.addAttribute("bookMstDto", bookMstDto);
                 return "book/add";
