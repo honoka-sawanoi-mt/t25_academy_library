@@ -38,8 +38,11 @@ public class BookController{
     @GetMapping("/book/index")
     public String index(Model model) {
         // 書籍を全件取得
+        /*BookMstのデータをコピーして、BookMstDtoとして使う！
+          (htmlなどのフロント部分に生のデータがあると危ないから)*/
         List<BookMstDto> bookMstList = this.bookMstService.findAvailableWithStockCount();
-        
+
+        //bookMstList(右)からbookMstList(左)に詰める
         model.addAttribute("bookMstList", bookMstList);
 
         return "book/index";
@@ -90,11 +93,13 @@ public class BookController{
         }
         try{ 
             bookMstService.save(bookMstDto);
+            //書籍一覧画面にリダイレクト
             return"redirect:/book/index";
              }catch (Exception e) {
                 log.error(e.getMessage());
                 result.reject("global.error", "登録処理でエラーが発生しました");
                 model.addAttribute("bookMstDto", bookMstDto);
+                //書籍登録画面に返す
                 return "book/add";
             }
         }

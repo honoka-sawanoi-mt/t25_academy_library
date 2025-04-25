@@ -1,7 +1,38 @@
+/*親要素に右寄せを適用（複数の要素を効率よく右寄せしたりできる！）*/
+.parent {
+  text-align: right;  /* 親要素内のインライン要素を右寄せ */
+}
+.btn_register {
+  display: inline-block;  /*幅や高さを指定できる状態にする*/
+  padding: 8px 20px;  /*ボタンの内側の余白（上下、左右）*/
+  background-color: #9CF2D3;  /* ボタンの背景色 */
+  color: #777;  /*ボタンの文字色*/
+  text-decoration: none;  /*文字の下線を削除（リンクの下線）*/
+  border-radius: 3px;  /*ボタンの角を丸くする*/
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px; /*ボタンの下に余白を追加*/
+}
+
+.table_wrapper {
+  width: 50%;
+  max-width: 800px;
+  margin: 0 auto; /* 中央寄せ */
+}
+.table_title {
+  color: #777;
+  font-size: 16px;
+  text-align: left;
+  margin: 20px 0 10px;   /*上下の余白*/
+}
+
 .books_table {
  width: 100%;
+ max-width: 800px;
+ margin: 0 auto;
  text-align: left;
- border-collapse: collapse;
+ border-collapse: collapse; /* セルの間の線をまとめる */
+ border: 1px solid #777;    /* テーブル全体の外枠線 */
  border-spacing: 0;
  border-radius:10px;
 }
@@ -9,24 +40,32 @@
 .books_table th{
   padding: 10px;
   background: rgba(0,0,0,0.06);
-  padding: 13px;
-  border: solid 1px #B9B9B9;
+  padding: 11px;
+  border: 1px solid #ccc; /* 各セルに枠線 */
   color: #545454;
-  font-size: 18px;
+  font-size: 13px;
 }
 
 .books_table td{
   text-align: left;
   vertical-align: top;
   background: #FFFFFF;
-  border: solid 1px #B9B9B9;
-  padding: 13px;
-  font-size: 20px;
+  border: 1px solid #ccc; /* 各セルに枠線 */
+  padding: 11px;
+  font-size: 12px;
+  border-radius: 5px;  /* 各セルの角を丸く */
 }
 
-.books_table td:nth-child(1){
-  width: 40%;
+.books_table th:nth-child(1),
+.books_table td:nth-child(1) {
+  width: 70%;
 }
+
+.books_table th:nth-child(2),
+.books_table td:nth-child(2) {
+  width: 30%;
+}
+
 
 .books_table td:nth-child(1) .book_title_contents{
   display: flex;
