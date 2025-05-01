@@ -20,6 +20,8 @@ import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
 import lombok.extern.log4j.Log4j2;
 
+//フロントにデータを渡すところ
+
 /**
  * 書籍関連クラス
  */

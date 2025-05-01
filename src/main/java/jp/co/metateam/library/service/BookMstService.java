@@ -18,6 +18,8 @@ import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.repository.BookMstRepository;
 import lombok.extern.log4j.Log4j2;
 
+//MVCモデルのModelに当たる部分（本来ならここにバリデーションチェックをする）
+
 @Service
 @Log4j2
 public class BookMstService {
